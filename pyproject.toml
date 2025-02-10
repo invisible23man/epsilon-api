@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "epsilon-api"
+version = "0.1.0"
+description = "A FastAPI-based backend service for the Epsilon Healthcare Analytics platform."
+authors = ["Gowrisankar <goch@moodagent.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
