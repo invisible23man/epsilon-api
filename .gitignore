@@ -19,3 +19,7 @@ venv/
 logs/
 *.log
 debug.log
+
+# Test coverage reports
+.coverage
+htmlcov/
