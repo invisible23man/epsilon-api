@@ -6,7 +6,7 @@ on:
       - main
       - dev
       - feature/*
-  pull_request:
+  pull_request_target:
     branches:
       - main
       - dev
@@ -64,3 +64,15 @@ jobs:
         run: |
           npm install -g vercel
           vercel --token ${{ secrets.VERCEL_TOKEN }} --prod
+
+  auto_approve:
+    name: Auto Approve PR
+    needs: test  # ✅ Runs only if tests pass
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write  # ✅ Allows GitHub Actions to approve PRs
+    steps:
+      - name: Auto Approve
+        uses: hmarr/auto-approve-action@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
