@@ -52,7 +52,7 @@ def custom_openapi():
         return None  # Prevent crashing the app if OpenAPI generation fails
 
 # ✅ Override FastAPI's OpenAPI generation safely
-# app.openapi = custom_openapi
+# app.openapi = custom_openapi ### FIX LATER ###
 
 @app.get("/")
 def root():
