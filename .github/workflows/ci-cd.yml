@@ -64,3 +64,13 @@ jobs:
         run: |
           npm install -g vercel
           vercel --token ${{ secrets.VERCEL_TOKEN }} --prod
+
+  auto_approve:
+    name: Auto Approve PR
+    needs: test  # ✅ Runs only if tests pass
+    runs-on: ubuntu-latest
+    steps:
+      - name: Auto Approve
+        uses: hmarr/auto-approve-action@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
