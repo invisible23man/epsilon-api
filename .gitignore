@@ -1,0 +1,21 @@
+# Byte-compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+.venv/
+venv/
+
+# Environment variables
+.env
+.env.local
+
+# Poetry cache
+.poetry/
+
+# Logs and temporary files
+logs/
+*.log
+debug.log
