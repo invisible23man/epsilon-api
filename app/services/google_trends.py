@@ -3,6 +3,8 @@ import random
 from pytrends.request import TrendReq
 from datetime import datetime
 from fastapi import HTTPException
+from app.config import CONFIG
+
 
 # Initialize Google Trends API
 pytrends = TrendReq(
@@ -23,6 +25,8 @@ def get_trends_data(search_terms=["mental health", "anxiety", "depression"]):
     Fetches Google Trends data for given search terms in Denmark.
     """
     try:
+        if not CONFIG.ENABLE_GOOGLE_TRENDS:
+            return {"error": "Google Trends API is disabled in configuration."}
 
         # Set region-specific parameters (Denmark)
         pytrends.build_payload(kw_list=search_terms, timeframe="now 7-d", geo="DK")

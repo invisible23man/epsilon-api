@@ -1,17 +1,11 @@
-import os
 import tweepy
-import redis
-import json
-from dotenv import load_dotenv
 from textblob import TextBlob
 from app.services.cache import cache_get, cache_set
+from app.config import CONFIG
 
-# Load API keys
-load_dotenv()
-BEARER_TOKEN = os.getenv("TWITTER_BEARER_TOKEN")
 
 # Initialize Twitter API client
-client = tweepy.Client(bearer_token=BEARER_TOKEN)
+client = tweepy.Client(bearer_token=CONFIG.TWITTER_BEARER_TOKEN)
 
 def analyze_sentiment(text):
     """
@@ -28,6 +22,10 @@ def analyze_sentiment(text):
 
 
 def get_mental_health_tweets():
+
+    if not CONFIG.ENABLE_TWITTER_TRENDS:
+        return {"error": "Twitter API is disabled in configuration."}
+
     cache_key = "mental_health_tweets"
     cached_data = cache_get(cache_key)
 

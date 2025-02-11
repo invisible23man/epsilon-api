@@ -3,6 +3,7 @@ from unittest.mock import patch, MagicMock
 from datetime import datetime
 from fastapi import HTTPException
 from app.services.google_trends import get_trends_data
+from app.config import CONFIG
 
 @pytest.fixture
 def mock_pytrends():
@@ -10,6 +11,8 @@ def mock_pytrends():
         yield mock
 
 
+
+@pytest.mark.skipif(not CONFIG.ENABLE_GOOGLE_TRENDS, reason="Google Trends disabled")
 def test_get_trends_data_success(mock_pytrends):
     mock_trends_data = MagicMock()
     mock_trends_data.empty = False
