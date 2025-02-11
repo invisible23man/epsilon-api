@@ -15,8 +15,7 @@ class Config:
     REDDIT_USER_AGENT = os.getenv("REDDIT_USER_AGENT")
 
     # Redis Cache
-    REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
-    REDIS_PORT = int(os.getenv("REDIS_PORT", 6379))
+    REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
 
     # Feature Flags
     ENABLE_GOOGLE_TRENDS = os.getenv("ENABLE_GOOGLE_TRENDS", "false").lower() == "true"
