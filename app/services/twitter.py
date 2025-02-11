@@ -4,13 +4,11 @@ import redis
 import json
 from dotenv import load_dotenv
 from textblob import TextBlob
+from app.services.cache import cache_get, cache_set
 
 # Load API keys
 load_dotenv()
 BEARER_TOKEN = os.getenv("TWITTER_BEARER_TOKEN")
-
-# Set up Redis cache
-# redis_client = redis.Redis(host="localhost", port=6379, db=0)
 
 # Initialize Twitter API client
 client = tweepy.Client(bearer_token=BEARER_TOKEN)
@@ -28,16 +26,13 @@ def analyze_sentiment(text):
     else:
         return "negative"
 
-def get_mental_health_tweets():
-    """
-    Fetch real-time tweets related to mental health topics.
-    Implements caching to avoid API rate limits.
-    """
-    # cache_key = "mental_health_tweets"
-    # cached_data = redis_client.get(cache_key)
 
-    # if cached_data:
-    #     return json.loads(cached_data)  # Return cached results
+def get_mental_health_tweets():
+    cache_key = "mental_health_tweets"
+    cached_data = cache_get(cache_key)
+
+    if cached_data:
+        return cached_data  # ✅ Return cached data if available
 
     try:
         query = "#mentalhealth OR #anxiety OR #depression lang:en -is:retweet"
@@ -55,9 +50,9 @@ def get_mental_health_tweets():
                 "timestamp": tweet.created_at.strftime("%Y-%m-%d %H:%M:%S")
             })
 
-        # Store in Redis cache (expires in 30 mins)
-        # redis_client.setex(cache_key, 1800, json.dumps(tweet_data))
+        cache_set(cache_key, tweet_data)  # ✅ Cache results for 30 min
         return tweet_data
 
     except tweepy.TweepyException as e:
         return {"error": f"Twitter API error: {str(e)}"}
+
