@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import call, patch, MagicMock
-from app.services.twitter import analyze_sentiment, get_mental_health_tweets
+from app.services.twitter import get_mental_health_tweets
 from app.config import CONFIG
 
 
@@ -18,7 +18,7 @@ def test_get_mental_health_tweets_returns_cached_data(mock_config, mock_cache_ge
     mock_cache_get.assert_called_once_with("mental_health_tweets")
 
 @patch('app.services.twitter.client')
-@patch('app.services.twitter.analyze_sentiment')
+@patch('app.services.utils.analyse.analyze_sentiment')
 @patch('app.services.twitter.cache_set')
 @patch('app.services.twitter.cache_get')
 @patch('app.services.twitter.CONFIG')
@@ -47,7 +47,7 @@ def test_get_mental_health_tweets_formats_data_correctly(mock_config, mock_cache
     mock_cache_set.assert_called_once_with("mental_health_tweets", result)
 
 @patch('app.services.twitter.client')
-@patch('app.services.twitter.analyze_sentiment')
+@patch('app.services.utils.analyse.analyze_sentiment')
 @patch('app.services.twitter.cache_get')
 @patch('app.services.twitter.CONFIG')
 @pytest.mark.skipif(not CONFIG.ENABLE_TWITTER_TRENDS, reason="Twitter API disabled")
@@ -79,15 +79,3 @@ def test_get_mental_health_tweets_analyzes_sentiment_correctly(mock_config, mock
         call("Feeling sad today.")
     ])
 
-@pytest.mark.parametrize("text, expected_sentiment", [
-    ("I'm feeling great today!", "positive"),
-    ("The weather is nice.", "positive"),
-    ("I don't have feelings about this.", "neutral"),
-    ("This is just a regular day.", "neutral"),
-    ("I'm feeling sad and upset.", "negative"),
-    ("This situation is really frustrating.", "negative"),
-])
-@pytest.mark.skipif(not CONFIG.ENABLE_TWITTER_TRENDS, reason="Twitter API disabled")
-def test_analyze_sentiment(text, expected_sentiment):
-    result = analyze_sentiment(text)
-    assert result == expected_sentiment

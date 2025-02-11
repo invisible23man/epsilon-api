@@ -17,3 +17,9 @@ def test_get_twitter_trends():
     response = client.get("/api/v1/trends/twitter")
     assert response.status_code == 200
     assert "tweet" in response.json()[0].keys() if response.json()[0].keys() else None
+
+@pytest.mark.skipif(not CONFIG.ENABLE_REDDIT_TRENDS, reason="Reddit Trends disabled")
+def test_get_reddit_trends():
+    response = client.get("/api/v1/trends/reddit")
+    assert response.status_code == 200
+    assert "reddit_posts" in response.json()

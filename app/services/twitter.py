@@ -1,24 +1,11 @@
 import tweepy
-from textblob import TextBlob
-from app.services.cache import cache_get, cache_set
 from app.config import CONFIG
+from app.services.cache import cache_get, cache_set
+from app.services.utils.analyse import analyze_sentiment
 
 
 # Initialize Twitter API client
 client = tweepy.Client(bearer_token=CONFIG.TWITTER_BEARER_TOKEN)
-
-def analyze_sentiment(text):
-    """
-    Perform sentiment analysis on the tweet text.
-    Returns 'positive', 'neutral', or 'negative'.
-    """
-    analysis = TextBlob(text)
-    if analysis.sentiment.polarity > 0:
-        return "positive"
-    elif analysis.sentiment.polarity == 0:
-        return "neutral"
-    else:
-        return "negative"
 
 
 def get_mental_health_tweets():
