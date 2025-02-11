@@ -8,13 +8,13 @@ from fastapi import HTTPException
 pytrends = TrendReq(
     hl="da-DK",
     tz=360,
-    timeout=(10, 25),
+    # timeout=(10, 25),
     # proxies=[
     #     "https://34.203.233.13:80",
     # ],
     # retries=2,
     # backoff_factor=0.1,
-    requests_args={"verify": False},
+    # requests_args={"verify": False},
 )
 
 

@@ -2,11 +2,11 @@ import pytest
 from unittest.mock import patch, MagicMock
 from datetime import datetime
 from fastapi import HTTPException
-from app.services.trends import get_trends_data
+from app.services.google_trends import get_trends_data
 
 @pytest.fixture
 def mock_pytrends():
-    with patch('app.services.trends.pytrends') as mock:
+    with patch('app.services.google_trends.pytrends') as mock:
         yield mock
 
 
