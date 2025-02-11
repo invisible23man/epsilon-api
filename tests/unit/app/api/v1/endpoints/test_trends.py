@@ -8,4 +8,4 @@ client = TestClient(app)
 def test_get_trends():
     response = client.get("/api/v1/trends/")
     assert response.status_code == 200
-    assert response.json() == {"message": "Google Trends API data coming soon!"}
+    assert "trends" in response.json().keys() 
