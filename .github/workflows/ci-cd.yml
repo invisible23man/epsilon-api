@@ -37,9 +37,11 @@ jobs:
         run: poetry run pytest --cov=app --cov-report=term-missing
 
   build:
-    name: Build Docker Image
+    name: Build and Push Docker Image
     needs: test
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
     if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/main'
     steps:
       - name: Checkout repository
