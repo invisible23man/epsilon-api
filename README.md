@@ -58,4 +58,4 @@ docker run -p 8000:8000 --env-file .env epsilon-api
 ├── .gitignore  # Ignored files for version control
 ├── Dockerfile  # Containerization
 ├── .env  # Environment variables
-```
+```# epsilon-database
