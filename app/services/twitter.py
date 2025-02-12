@@ -1,0 +1,43 @@
+import tweepy
+from app.config import CONFIG
+from app.services.cache import cache_get, cache_set
+from app.services.utils.analyse import analyze_sentiment
+
+
+# Initialize Twitter API client
+client = tweepy.Client(bearer_token=CONFIG.TWITTER_BEARER_TOKEN)
+
+
+def get_mental_health_tweets():
+
+    if not CONFIG.ENABLE_TWITTER_TRENDS:
+        return {"error": "Twitter API is disabled in configuration."}
+
+    cache_key = "mental_health_tweets"
+    cached_data = cache_get(cache_key)
+
+    if cached_data:
+        return cached_data  # ✅ Return cached data if available
+
+    try:
+        query = "#mentalhealth OR #anxiety OR #depression lang:en -is:retweet"
+        tweets = client.search_recent_tweets(query=query, max_results=10, tweet_fields=["created_at", "text", "author_id"])
+
+        if not tweets.data:
+            return {"error": "No tweets found"}
+
+        tweet_data = []
+        for tweet in tweets.data:
+            tweet_data.append({
+                "username": f"@user_{tweet.author_id}",
+                "tweet": tweet.text,
+                "sentiment": analyze_sentiment(tweet.text),
+                "timestamp": tweet.created_at.strftime("%Y-%m-%d %H:%M:%S")
+            })
+
+        cache_set(cache_key, tweet_data)  # ✅ Cache results for 30 min
+        return tweet_data
+
+    except tweepy.TweepyException as e:
+        return {"error": f"Twitter API error: {str(e)}"}
+

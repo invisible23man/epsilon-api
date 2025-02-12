@@ -13,6 +13,12 @@ uvicorn = "^0.18.3"
 SQLAlchemy = "^1.4.41"
 Pydantic = "^1.10.2"
 PyJWT = "^2.4.0"
+pytrends = "^4.9.2"
+tweepy = "^4.15.0"
+textblob = "^0.19.0"
+redis = "^5.2.1"
+python-dotenv = "^1.0.1"
+praw = "^7.8.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.2.0"
